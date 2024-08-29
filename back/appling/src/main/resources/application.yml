@@ -1,1 +1,6 @@
-spring.application.name=appling
+spring:
+  application:
+    name: appling
+  docker:
+    compose:
+      file: compose.yaml
