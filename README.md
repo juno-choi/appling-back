@@ -2,6 +2,6 @@
 
 ## 🍏 Use Case
 
-![Diagram](../../appling.drawio.png)
+![Diagram](appling.drawio.png)
 
 ## 🍏 ERD
