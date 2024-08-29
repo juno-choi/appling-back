@@ -2,6 +2,8 @@
 
 ## 🍏 Use Case
 
-![Diagram](appling.drawio.png)
+![UseCase](useCase.png)
 
 ## 🍏 ERD
+
+![ERD](erd.png)
