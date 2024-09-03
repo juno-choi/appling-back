@@ -85,7 +85,7 @@ tasks.jacocoTestCoverageVerification {
 			excludes = listOf(
 				"*.ApplingApplication*"
 				, "*.global.*"
-				, "*.Hello*"
+				, "*.domain.*"
 			)
 		}
 	}
