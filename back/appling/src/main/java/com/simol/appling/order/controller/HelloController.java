@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Auth API", description = "Appling API Documentation")
+@Tag(name = "Appling API", description = "Appling API Documentation")
 public class HelloController {
 
     @Operation(summary = "hello", description = "hello api")
