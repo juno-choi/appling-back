@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ProductServiceImplTest {
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Autowired
     private ProductRepository productRepository;
@@ -43,7 +43,7 @@ class ProductServiceImplTest {
     void putProductFail() {
         //given
         PutProductRequest putProductRequest = PutProductRequest.builder()
-                .productId(1L)
+                .productId(0L)
                 .productName("아리수")
                 .productWeight(5)
                 .productType("11과")
