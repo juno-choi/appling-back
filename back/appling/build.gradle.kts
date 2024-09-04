@@ -65,14 +65,14 @@ tasks.jacocoTestCoverageVerification {
 			limit {
 				counter = "LINE"
 				value = "COVEREDRATIO"
-				minimum = "0.80".toBigDecimal()
+				minimum = "1.00".toBigDecimal()
 			}
 
 			// 브랜치 커버리지를 최소한 90%
 			limit {
 				counter = "BRANCH"
 				value = "COVEREDRATIO"
-				minimum = "0.99".toBigDecimal()
+				minimum = "1.00".toBigDecimal()
 			}
 
 			// 빈 줄을 제외한 코드의 라인수를 최대 200라인으로 제한합니다.
