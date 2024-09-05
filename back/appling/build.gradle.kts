@@ -38,6 +38,11 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// ✅ querydsl을 설치합니다. ":jakarta"를 꼭 설정합니다
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	// java.lang.NoClassDefFoundError(jakarta.persistence.Entity) 발생 대응
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 }
 
 tasks.withType<Test> {
@@ -85,6 +90,7 @@ tasks.jacocoTestCoverageVerification {
 			excludes = listOf(
 				"*.ApplingApplication*"
 				, "*.global.*"
+				, "*.Q*"
 			)
 		}
 	}
