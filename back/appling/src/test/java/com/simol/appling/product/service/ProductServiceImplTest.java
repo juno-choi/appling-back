@@ -1,17 +1,21 @@
 package com.simol.appling.product.service;
 
+import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import com.simol.appling.product.domain.vo.PostProductResponse;
+import com.simol.appling.product.domain.vo.ProductListResponse;
 import com.simol.appling.product.domain.vo.PutProductResponse;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootTest
 class ProductServiceImplTest {
@@ -20,6 +24,11 @@ class ProductServiceImplTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @AfterEach
+    void cleanUp() {
+        productRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("상품 등록에 성공한다.")
@@ -86,5 +95,32 @@ class ProductServiceImplTest {
         ProductEntity productEntity = productRepository.findById(saveProduct.getProductId()).get();
         Assertions.assertThat(putProductResponse.productPrice()).isEqualTo(200_000);
         Assertions.assertThat(productEntity.getProductPrice()).isEqualTo(200_000);
+    }
+
+    @Test
+    @DisplayName("상품 리스트를 불러오는데 성공")
+    void getProductList() {
+        //given
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("아리수")
+                .productWeight(5)
+                .productType("11과")
+                .productPrice(100_000)
+                .productStock(100)
+                .build();
+        ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
+
+        Pageable pageable = Pageable.ofSize(10);
+        // pageable.next();
+        GetProductListRequest request = GetProductListRequest.builder()
+                .pageable(pageable)
+                .search("")
+                .build();
+
+        //when
+        ProductListResponse productList = productService.getProductList(request);
+
+        //then
+        Assertions.assertThat(productList.productList().get(0).productName()).isEqualTo(saveProduct.getProductName());
     }
 }
