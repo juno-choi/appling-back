@@ -19,6 +19,7 @@ public class ProductEntity extends CommonEntity {
     private String productName;
     private int productWeight;
     private String productType;
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
     private int productPrice;
     private int productStock;
