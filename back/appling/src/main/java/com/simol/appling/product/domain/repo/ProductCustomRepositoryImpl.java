@@ -1,6 +1,8 @@
 package com.simol.appling.product.domain.repo;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.simol.appling.global.api.enums.Sort;
+import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.entity.QProductEntity;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,15 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository{
     private final JPAQueryFactory querydsl;
 
     @Override
-    public Page<ProductEntity> findAll(Pageable pageable, String search) {
+    public Page<ProductEntity> findAll(GetProductListRequest getProductListRequest) {
+        Pageable pageable = Pageable.ofSize(getProductListRequest.getSize()).withPage(getProductListRequest.getPage());
+
+        Sort sort = getProductListRequest.getSort();
+
         QProductEntity product = QProductEntity.productEntity;
 
         List<ProductEntity> fetch = querydsl.selectFrom(product)
-                .orderBy(product.productId.desc())
+                .orderBy(sort == Sort.ASC ? product.productId.asc() : product.productId.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

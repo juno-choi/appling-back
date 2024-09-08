@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductListResponse getProductList(GetProductListRequest getProductListRequest) {
-        Page<ProductEntity> productPage = productCustomRepository.findAll(getProductListRequest.getPageable(), getProductListRequest.getSearch());
+        Page<ProductEntity> productPage = productCustomRepository.findAll(getProductListRequest);
 
         int totalPage = productPage.getTotalPages();
         Long totalElements = productPage.getTotalElements();

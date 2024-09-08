@@ -1,5 +1,6 @@
 package com.simol.appling.product.service;
 
+import com.simol.appling.global.api.enums.Sort;
 import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
@@ -110,10 +111,11 @@ class ProductServiceImplTest {
                 .build();
         ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
 
-        Pageable pageable = Pageable.ofSize(10);
         // pageable.next();
         GetProductListRequest request = GetProductListRequest.builder()
-                .pageable(pageable)
+                .size(10)
+                .page(0)
+                .sort(Sort.DESC)
                 .search("")
                 .build();
 
