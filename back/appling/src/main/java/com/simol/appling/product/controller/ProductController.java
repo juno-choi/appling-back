@@ -19,9 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @ApiController
 @RequiredArgsConstructor
 @Tag(name = "Product", description = "Product API Documentation")

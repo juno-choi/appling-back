@@ -3,7 +3,6 @@ package com.simol.appling.product.domain.repo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.entity.QProductEntity;
-import com.simol.appling.product.domain.vo.ProductVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
