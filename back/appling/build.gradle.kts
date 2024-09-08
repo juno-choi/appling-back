@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.4.0-M2"
+	id("org.springframework.boot") version "3.3.3"
 	id("io.spring.dependency-management") version "1.1.6"
 	jacoco
 }
@@ -43,6 +43,7 @@ dependencies {
 	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
 	// java.lang.NoClassDefFoundError(jakarta.persistence.Entity) 발생 대응
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	implementation("org.springframework:spring-aop:6.0.11")
 }
 
 tasks.withType<Test> {
