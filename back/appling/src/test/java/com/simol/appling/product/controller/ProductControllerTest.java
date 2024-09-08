@@ -2,6 +2,11 @@ package com.simol.appling.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simol.appling.product.domain.dto.PostProductRequest;
+import com.simol.appling.product.domain.dto.PutProductRequest;
+import com.simol.appling.product.domain.entity.ProductEntity;
+import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.repo.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +15,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional(readOnly = true)
 class ProductControllerTest {
 
     @Autowired
@@ -23,8 +30,16 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @BeforeEach
+    void setUp() {
+        productRepository.deleteAll();
+    }
+
     @Test
-    @DisplayName("/post/product")
+    @DisplayName("[POST] /api/v1/product")
     void postProduct() throws Exception {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
@@ -35,7 +50,6 @@ class ProductControllerTest {
                 .productType("11과")
                 .build();
 
-
         //when
         ResultActions perform = mockMvc.perform(post("/api/v1/product")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,6 +57,59 @@ class ProductControllerTest {
 
         //then
         perform.andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("[PUT] /api/v1/product")
+    void putProduct() throws Exception {
+        //given
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("등록 상품")
+                .productWeight(5)
+                .productPrice(10000)
+                .productStock(10)
+                .productType("11과")
+                .build();
+        ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
+
+        PutProductRequest putProductRequest = PutProductRequest.builder()
+                .productId(saveProduct.getProductId())
+                .productType("12과")
+                .productPrice(100000)
+                .productStock(10)
+                .productWeight(10)
+                .productName("수정 상품")
+                .productStatus(ProductStatus.ON_SALE)
+                .build();
+
+        //when
+        ResultActions perform = mockMvc.perform(put("/api/v1/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(putProductRequest)));
+
+        //then
+        perform.andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("[GET] /api/v1/product")
+    void getProduct() throws Exception {
+        //given
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("등록 상품")
+                .productWeight(5)
+                .productPrice(10000)
+                .productStock(10)
+                .productType("11과")
+                .build();
+        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/product").param("size", "10").param("page", "0").param("sort", "DESC"));
+
+        //then
+        perform.andExpect(status().isOk());
     }
 
 }
