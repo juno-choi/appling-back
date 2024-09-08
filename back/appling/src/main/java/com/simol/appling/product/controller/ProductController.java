@@ -37,7 +37,7 @@ public class ProductController {
     })
     public ResponseEntity<ResponseData<PostProductResponse>> product(@RequestBody @Validated PostProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.createProduct(productRequest)));
+                .body(ResponseData.from(ResponseDataCode.CREATE, productService.createProduct(productRequest)));
     }
 
     @PutMapping("/product")
