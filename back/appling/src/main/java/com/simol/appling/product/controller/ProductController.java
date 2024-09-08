@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,7 @@ import java.util.Map;
 
 @ApiController
 @RequiredArgsConstructor
-@Tag(name = "Product API", description = "Product API Documentation")
+@Tag(name = "Product", description = "Product API Documentation")
 public class ProductController {
     private final ProductService productService;
 
@@ -35,13 +34,7 @@ public class ProductController {
             @ApiResponse(responseCode = "201", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
     })
-    public ResponseEntity<ResponseData<PostProductResponse>> product(@RequestBody @Validated PostProductRequest productRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ResponseData.from(ResponseDataCode.SUCCESS, errors));
-        }
+    public ResponseEntity<ResponseData<PostProductResponse>> product(@RequestBody @Validated PostProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.createProduct(productRequest)));
     }
