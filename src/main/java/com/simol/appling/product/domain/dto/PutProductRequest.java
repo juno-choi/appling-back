@@ -2,6 +2,7 @@ package com.simol.appling.product.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,14 +23,11 @@ public class PutProductRequest {
     @JsonProperty("product_name")
     @Schema(description = "상품명", example = "시나노 골드")
     private String productName;
-    @NotNull(message = "상품 무게를 입력해 주세요.")
-    @JsonProperty("product_weight")
-    @Schema(description = "상품 무게", example = "10")
-    private int productWeight;
-    @NotNull(message = "상품 타입을 입력해 주세요. ex) 사과는 11과")
+
+    @NotNull(message = "상품 타입을 입력해 주세요. ex) OPTION")
     @JsonProperty("product_type")
-    @Schema(description = "상품 타입", example = "13과")
-    private String productType;
+    @Schema(description = "상품 타입", example = "OPTION")
+    private ProductType productType;
     @NotNull(message = "상품 가격을 입력해 주세요.")
     @JsonProperty("product_price")
     @Schema(description = "상품 가격", example = "150000")

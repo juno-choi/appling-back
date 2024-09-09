@@ -3,6 +3,7 @@ package com.simol.appling.product.domain.entity;
 import com.simol.appling.global.entity.CommonEntity;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,8 +18,9 @@ public class ProductEntity extends CommonEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String productName;
-    private int productWeight;
-    private String productType;
+
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
     private int productPrice;
@@ -26,8 +28,7 @@ public class ProductEntity extends CommonEntity {
 
     public void update(PutProductRequest putProductRequest) {
         this.productName = putProductRequest.getProductName();
-        this.productWeight = putProductRequest.getProductWeight();
-        this.productType = putProductRequest.getProductType();
+        this.productType = ProductType.OPTION;
         this.productPrice = putProductRequest.getProductPrice();
         this.productStock = putProductRequest.getProductStock();
         this.productStatus = putProductRequest.getProductStatus();

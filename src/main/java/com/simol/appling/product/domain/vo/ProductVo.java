@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -17,10 +18,8 @@ public record ProductVo (
     Long productId,
     @Schema(description = "상품명", example = "아리수")
     String productName,
-    @Schema(description = "상품 무게", example = "5")
-    int productWeight,
-    @Schema(description = "상품 타입", example = "11과")
-    String productType,
+    @Schema(description = "상품 타입", example = "OPTION")
+    ProductType productType,
     @Schema(description = "상품 상태", example = "ON_SALE")
     ProductStatus productStatus,
     @Schema(description = "상품 가격", example = "100000")
@@ -32,7 +31,6 @@ public record ProductVo (
         return ProductVo.builder()
             .productId(productEntity.getProductId())
             .productName(productEntity.getProductName())
-            .productWeight(productEntity.getProductWeight())
             .productType(productEntity.getProductType())
             .productStatus(productEntity.getProductStatus())
             .productPrice(productEntity.getProductPrice())
