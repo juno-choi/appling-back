@@ -21,11 +21,7 @@ public record ProductVo (
     @Schema(description = "상품 타입", example = "OPTION")
     ProductType productType,
     @Schema(description = "상품 상태", example = "ON_SALE")
-    ProductStatus productStatus,
-    @Schema(description = "상품 가격", example = "100000")
-    int productPrice,
-    @Schema(description = "상품 수량", example = "100")
-    int productStock
+    ProductStatus productStatus
     ) {
     public static ProductVo from(ProductEntity productEntity) {
         return ProductVo.builder()
@@ -33,8 +29,6 @@ public record ProductVo (
             .productName(productEntity.getProductName())
             .productType(productEntity.getProductType())
             .productStatus(productEntity.getProductStatus())
-            .productPrice(productEntity.getProductPrice())
-            .productStock(productEntity.getProductStock())
             .build();
     }
 }

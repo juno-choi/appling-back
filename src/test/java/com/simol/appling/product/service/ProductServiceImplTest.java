@@ -6,6 +6,7 @@ import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import com.simol.appling.product.domain.vo.PostProductResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
@@ -37,10 +38,7 @@ class ProductServiceImplTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .build();
         //when
         PostProductResponse product = productService.createProduct(productRequest);
@@ -55,10 +53,7 @@ class ProductServiceImplTest {
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(0L)
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .productStatus(ProductStatus.ON_SALE)
                 .build();
         //when
@@ -72,30 +67,25 @@ class ProductServiceImplTest {
     @DisplayName("상풍 수정에 성공한다.")
     void putProduct() {
         //given
+        final String CHANGE_PRODUCT_NAME = "시나노 골드";
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .build();
 
         ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
-                .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(200_000)
-                .productStock(100)
+                .productName(CHANGE_PRODUCT_NAME)
+                .productType(ProductType.OPTION)
                 .productStatus(ProductStatus.ON_SALE)
                 .build();
         //when
         PutProductResponse putProductResponse = productService.putProduct(putProductRequest);
         //then
         ProductEntity productEntity = productRepository.findById(saveProduct.getProductId()).get();
-        Assertions.assertThat(putProductResponse.productPrice()).isEqualTo(200_000);
-        Assertions.assertThat(productEntity.getProductPrice()).isEqualTo(200_000);
+        Assertions.assertThat(putProductResponse.productName()).isEqualTo(CHANGE_PRODUCT_NAME);
+        Assertions.assertThat(productEntity.getProductName()).isEqualTo(CHANGE_PRODUCT_NAME);
     }
 
     @Test
@@ -104,10 +94,7 @@ class ProductServiceImplTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .build();
         ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
 

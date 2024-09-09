@@ -5,6 +5,7 @@ import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,10 +47,7 @@ class ProductControllerTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
-                .productWeight(5)
-                .productPrice(10000)
-                .productStock(10)
-                .productType("11과")
+                .productType(ProductType.OPTION)
                 .build();
 
         //when
@@ -67,19 +65,13 @@ class ProductControllerTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
-                .productWeight(5)
-                .productPrice(10000)
-                .productStock(10)
-                .productType("11과")
+                .productType(ProductType.OPTION)
                 .build();
         ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
 
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
-                .productType("12과")
-                .productPrice(100000)
-                .productStock(10)
-                .productWeight(10)
+                .productType(ProductType.OPTION)
                 .productName("수정 상품")
                 .productStatus(ProductStatus.ON_SALE)
                 .build();
@@ -99,10 +91,7 @@ class ProductControllerTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
-                .productWeight(5)
-                .productPrice(10000)
-                .productStock(10)
-                .productType("11과")
+                .productType(ProductType.OPTION)
                 .build();
         ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
         ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
@@ -121,10 +110,7 @@ class ProductControllerTest {
         final Long NOT_EXISTS_PRODUCT_ID = 100L;
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(NOT_EXISTS_PRODUCT_ID)
-                .productType("12과")
-                .productPrice(100000)
-                .productStock(10)
-                .productWeight(10)
+                .productType(ProductType.OPTION)
                 .productName("수정 상품")
                 .productStatus(ProductStatus.ON_SALE)
                 .build();

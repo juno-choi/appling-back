@@ -23,14 +23,10 @@ public class ProductEntity extends CommonEntity {
     private ProductType productType;
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
-    private int productPrice;
-    private int productStock;
 
     public void update(PutProductRequest putProductRequest) {
         this.productName = putProductRequest.getProductName();
         this.productType = ProductType.OPTION;
-        this.productPrice = putProductRequest.getProductPrice();
-        this.productStock = putProductRequest.getProductStock();
         this.productStatus = putProductRequest.getProductStatus();
     }
 }

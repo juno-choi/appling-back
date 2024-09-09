@@ -23,19 +23,10 @@ public class PutProductRequest {
     @JsonProperty("product_name")
     @Schema(description = "상품명", example = "시나노 골드")
     private String productName;
-
     @NotNull(message = "상품 타입을 입력해 주세요. ex) OPTION")
     @JsonProperty("product_type")
     @Schema(description = "상품 타입", example = "OPTION")
     private ProductType productType;
-    @NotNull(message = "상품 가격을 입력해 주세요.")
-    @JsonProperty("product_price")
-    @Schema(description = "상품 가격", example = "150000")
-    private int productPrice;
-    @NotNull(message = "상품 수량을 입력해 주세요.")
-    @JsonProperty("product_stock")
-    @Schema(description = "상품 수량", example = "0")
-    private int productStock;
     @NotNull(message = "상품 상태를 입력해 주세요.")
     @JsonProperty("product_status")
     @Schema(description = "상품 상태", example = "SOLD_OUT")

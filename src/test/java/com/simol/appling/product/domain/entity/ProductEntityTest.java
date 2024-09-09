@@ -2,6 +2,7 @@ package com.simol.appling.product.domain.entity;
 
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,20 +18,14 @@ class ProductEntityTest {
         ProductEntity productEntity = ProductEntity.builder()
                 .productId(1L)
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .productStatus(ProductStatus.ON_SALE)
                 .build();
 
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(1L)
                 .productName("아리수")
-                .productWeight(5)
-                .productType("11과")
-                .productPrice(100_000)
-                .productStock(100)
+                .productType(ProductType.OPTION)
                 .productStatus(ProductStatus.SOLD_OUT)
                 .build();
 

@@ -21,11 +21,8 @@ public record PutProductResponse(
     @Schema(description = "상품 타입", example = "OPTION")
     ProductType productType,
     @Schema(description = "상품 상태", example = "SOLD_OUT")
-    ProductStatus productStatus,
-    @Schema(description = "상품 가격", example = "150000")
-    int productPrice,
-    @Schema(description = "상품 수량", example = "0")
-    int productStock
+    ProductStatus productStatus
+
 ) {
     public static PutProductResponse from(ProductEntity updateProductEntity) {
         return PutProductResponse.builder()
@@ -33,8 +30,6 @@ public record PutProductResponse(
                 .productName(updateProductEntity.getProductName())
                 .productType(updateProductEntity.getProductType())
                 .productStatus(updateProductEntity.getProductStatus())
-                .productPrice(updateProductEntity.getProductPrice())
-                .productStock(updateProductEntity.getProductStock())
                 .build();
     }
 }
