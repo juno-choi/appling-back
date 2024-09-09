@@ -21,7 +21,7 @@ public class GlobalControllerLog {
         String requestURI = ((ServletRequestAttributes) requestAttributes).getRequest()
                 .getRequestURI();
 
-        log.info("[appling] requestUri=[{}] package = [{}], method = [{}]",
+        log.info("[appling] [controller] requestUri=[{}] package = [{}], method = [{}]",
                 requestURI, type, method);
 
         return pjp.proceed();

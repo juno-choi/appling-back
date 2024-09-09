@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class GlobalServiceLog {
     @Around("execution(* com.simol.appling..*.service..*.*(..))")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("[appling] method = [{}]", pjp.getSignature().toShortString());
+        log.info("[appling] [service] method = [{}]", pjp.getSignature().toShortString());
 
         return pjp.proceed();
     }
