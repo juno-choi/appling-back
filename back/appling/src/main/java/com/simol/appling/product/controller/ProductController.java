@@ -9,6 +9,7 @@ import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.vo.PostProductResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
+import com.simol.appling.product.domain.vo.PutProductResponse;
 import com.simol.appling.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,7 +33,7 @@ public class ProductController {
     @PostMapping("/product")
     @Operation(summary = "상품 등록", description = "상품 등록 api")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+            @ApiResponse(responseCode = "201", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PostProductResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
     })
     public ResponseEntity<ResponseData<PostProductResponse>> product(@RequestBody @Validated PostProductRequest productRequest) {
@@ -43,7 +44,7 @@ public class ProductController {
     @PutMapping("/product")
     @Operation(summary = "상품 수정", description = "상품 수정 api")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+            @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PutProductResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
     })
     public ResponseEntity<ResponseData<PostProductResponse>> putProduct(@RequestBody @Validated PutProductRequest putProductRequest) {
@@ -54,7 +55,7 @@ public class ProductController {
     @GetMapping("/product")
     @Operation(summary = "상품리스트", description = "상품리스트 api")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
+            @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductListResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     })
     public ResponseEntity<ResponseData<ProductListResponse>> getProductList(

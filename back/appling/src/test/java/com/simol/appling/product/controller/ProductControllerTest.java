@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,4 +114,27 @@ class ProductControllerTest {
         perform.andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("[PUT] /api/v1/product 유효하지 않은 상품은 실패")
+    void putProductFail() throws Exception{
+        //given
+        final Long NOT_EXISTS_PRODUCT_ID = 100L;
+        PutProductRequest putProductRequest = PutProductRequest.builder()
+                .productId(NOT_EXISTS_PRODUCT_ID)
+                .productType("12과")
+                .productPrice(100000)
+                .productStock(10)
+                .productWeight(10)
+                .productName("수정 상품")
+                .productStatus(ProductStatus.ON_SALE)
+                .build();
+        //when
+        ResultActions perform = mockMvc.perform(put("/api/v1/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(putProductRequest)));
+        //then
+        perform.andExpect(status().is4xxClientError());
+        perform.andReturn().getResponse()
+                .getContentAsString(StandardCharsets.UTF_8).contains("유효하지 않은");
+    }
 }

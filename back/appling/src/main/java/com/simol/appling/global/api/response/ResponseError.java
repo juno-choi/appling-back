@@ -16,6 +16,13 @@ public record ResponseError(
                 .build();
     }
 
+    public static ResponseError from(String detail, String message) {
+        return ResponseError.builder()
+                .detail(detail)
+                .message(message)
+                .build();
+    }
+
     private static String fieldConvertToSnakeCase(String field) {
         return field.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
     }
