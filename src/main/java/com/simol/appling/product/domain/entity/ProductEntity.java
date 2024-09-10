@@ -7,6 +7,9 @@ import com.simol.appling.product.domain.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "product")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,6 +26,9 @@ public class ProductEntity extends CommonEntity {
     private ProductType productType;
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductOptionEntity> productOptionList;
 
     public void update(PutProductRequest putProductRequest) {
         this.productName = putProductRequest.getProductName();
