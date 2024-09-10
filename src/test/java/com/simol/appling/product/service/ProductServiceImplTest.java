@@ -2,9 +2,11 @@ package com.simol.appling.product.service;
 
 import com.simol.appling.global.api.enums.Sort;
 import com.simol.appling.product.domain.dto.GetProductListRequest;
+import com.simol.appling.product.domain.dto.PostProductOptionDto;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
+import com.simol.appling.product.domain.enums.OptionStatus;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
 import com.simol.appling.product.domain.repo.ProductRepository;
@@ -18,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @SpringBootTest
 class ProductServiceImplTest {
@@ -36,10 +40,21 @@ class ProductServiceImplTest {
     @DisplayName("상품 등록에 성공한다.")
     void createProduct() {
         //given
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .optionName("11-12과")
+                .optionPrice(100000)
+                .optionStatus(OptionStatus.ON_SALE)
+                .optionStock(100)
+                .optionDescription("아리수 11-12과 입니다.")
+                .optionSort(1)
+                .build();
+
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("아리수")
                 .productType(ProductType.OPTION)
+                .productOption(List.of(option))
                 .build();
+
         //when
         PostProductResponse product = productService.createProduct(productRequest);
         //then
@@ -73,7 +88,7 @@ class ProductServiceImplTest {
                 .productType(ProductType.OPTION)
                 .build();
 
-        ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
                 .productName(CHANGE_PRODUCT_NAME)
@@ -96,7 +111,7 @@ class ProductServiceImplTest {
                 .productName("아리수")
                 .productType(ProductType.OPTION)
                 .build();
-        ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
 
         // pageable.next();
         GetProductListRequest request = GetProductListRequest.builder()

@@ -1,9 +1,11 @@
 package com.simol.appling.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simol.appling.product.domain.dto.PostProductOptionDto;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
+import com.simol.appling.product.domain.enums.OptionStatus;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
 import com.simol.appling.product.domain.repo.ProductRepository;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,9 +48,18 @@ class ProductControllerTest {
     @DisplayName("[POST] /api/v1/product")
     void postProduct() throws Exception {
         //given
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .optionName("11-12과")
+                .optionPrice(100000)
+                .optionStatus(OptionStatus.ON_SALE)
+                .optionStock(100)
+                .optionDescription("아리수 11-12과 입니다.")
+                .optionSort(1)
+                .build();
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
                 .productType(ProductType.OPTION)
+                .productOption(List.of(option))
                 .build();
 
         //when
@@ -67,7 +79,7 @@ class ProductControllerTest {
                 .productName("등록 상품")
                 .productType(ProductType.OPTION)
                 .build();
-        ProductEntity saveProduct = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
 
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
@@ -93,8 +105,8 @@ class ProductControllerTest {
                 .productName("등록 상품")
                 .productType(ProductType.OPTION)
                 .build();
-        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
-        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
 
         //when
         ResultActions perform = mockMvc.perform(get("/api/v1/product").param("size", "10").param("page", "0").param("sort", "DESC"));

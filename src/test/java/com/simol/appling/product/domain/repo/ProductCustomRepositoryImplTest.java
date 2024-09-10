@@ -39,8 +39,8 @@ class ProductCustomRepositoryImplTest {
                 .productType(ProductType.OPTION)
                 .build();
 
-        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
-        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
 
         //when
         Page<ProductEntity> productPage = productCustomRepository.findAll(GetProductListRequest.from(10, 0, Sort.ASC, ""));
@@ -58,8 +58,8 @@ class ProductCustomRepositoryImplTest {
                 .productType(ProductType.OPTION)
                 .build();
 
-        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
-        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
 
         //when
         Page<ProductEntity> productPage = productCustomRepository.findAll(GetProductListRequest.from(10, 0, Sort.DESC, ""));

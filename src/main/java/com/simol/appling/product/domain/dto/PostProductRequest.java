@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -26,12 +29,9 @@ public class PostProductRequest {
     @JsonProperty("product_type")
     @Schema(description = "상품 타입", example = "OPTION")
     private ProductType productType;
+    @NotNull(message = "상품 옵션을 입력해주세요.")
+    @JsonProperty("product_option")
+    @Schema(description = "상품 옵션")
+    private List<PostProductOptionDto> productOption;
 
-    public ProductEntity toProductEntity() {
-        return ProductEntity.builder()
-                .productName(productName)
-                .productType(productType)
-                .productStatus(ProductStatus.ON_SALE)
-                .build();
-    }
 }

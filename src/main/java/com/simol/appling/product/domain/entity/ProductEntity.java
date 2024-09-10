@@ -1,6 +1,7 @@
 package com.simol.appling.product.domain.entity;
 
 import com.simol.appling.global.entity.CommonEntity;
+import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
@@ -30,9 +31,19 @@ public class ProductEntity extends CommonEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOptionEntity> productOptionList;
 
+    public static ProductEntity from(PostProductRequest postProductRequest) {
+        return ProductEntity.builder()
+                .productName(postProductRequest.getProductName())
+                .productType(ProductType.OPTION)
+                .productStatus(ProductStatus.ON_SALE)
+                .productOptionList(new ArrayList<>())
+                .build();
+    }
+
     public void update(PutProductRequest putProductRequest) {
         this.productName = putProductRequest.getProductName();
         this.productType = ProductType.OPTION;
         this.productStatus = putProductRequest.getProductStatus();
     }
+
 }
