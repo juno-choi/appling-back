@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "상품명 옵션")
+@Schema(description = "상품명 옵션 (등록)")
 public class PostProductOptionDto {
     @JsonProperty("option_name")
     @NotNull(message = "옵션명을 입력해주세요.")
