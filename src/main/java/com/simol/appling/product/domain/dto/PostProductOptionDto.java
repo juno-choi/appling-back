@@ -1,8 +1,6 @@
 package com.simol.appling.product.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.simol.appling.product.domain.entity.ProductEntity;
-import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.enums.OptionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -10,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Builder
