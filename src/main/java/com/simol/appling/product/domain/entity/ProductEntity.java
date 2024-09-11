@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "product")
@@ -44,6 +45,14 @@ public class ProductEntity extends CommonEntity {
         this.productName = putProductRequest.getProductName();
         this.productType = ProductType.OPTION;
         this.productStatus = putProductRequest.getProductStatus();
+
+        // product option 데이터 처리
+        // 리스트에 매치되지 않는 값들은 모두 제거 처리
+        this.productOptionList.clear();
+        List<ProductOptionEntity> newProductOptionList = putProductRequest.getProductOption().stream()
+                .map(f -> ProductOptionEntity.from(f, this))
+                .collect(Collectors.toList());
+        this.productOptionList.addAll(newProductOptionList);
     }
 
 }

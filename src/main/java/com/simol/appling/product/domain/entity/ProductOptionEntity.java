@@ -2,6 +2,7 @@ package com.simol.appling.product.domain.entity;
 
 import com.simol.appling.global.entity.CommonEntity;
 import com.simol.appling.product.domain.dto.PostProductOptionDto;
+import com.simol.appling.product.domain.dto.PutProductOptionDto;
 import com.simol.appling.product.domain.enums.OptionStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,5 +39,19 @@ public class ProductOptionEntity extends CommonEntity {
                 .optionDescription(dto.getOptionDescription())
                 .product(product)
                 .build();
+    }
+
+    public static ProductOptionEntity from(PutProductOptionDto dto, ProductEntity product) {
+        ProductOptionEntity entity = ProductOptionEntity.builder()
+                .optionId(dto.getOptionId())
+                .optionName(dto.getOptionName())
+                .optionSort(dto.getOptionSort())
+                .optionPrice(dto.getOptionPrice())
+                .optionStock(dto.getOptionStock())
+                .optionStatus(dto.getOptionStatus())
+                .optionDescription(dto.getOptionDescription())
+                .product(product)
+                .build();
+        return entity;
     }
 }
