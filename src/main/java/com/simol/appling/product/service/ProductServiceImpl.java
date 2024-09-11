@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PostProductResponse createProduct(PostProductRequest postProductRequest) {
         ProductEntity saveProduct = productRepository.save(ProductEntity.from(postProductRequest));
-        // todo saveProduct에 option list 추가하기
+        // saveProduct에 option list 추가하기
         List<ProductOptionEntity> productOptionList = postProductRequest.getProductOption().stream()
                 .map(f -> ProductOptionEntity.from(f, saveProduct))
                 .collect(Collectors.toList());
