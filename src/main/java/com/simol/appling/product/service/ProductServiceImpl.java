@@ -8,10 +8,7 @@ import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.repo.ProductCustomRepository;
 import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
-import com.simol.appling.product.domain.vo.PostProductResponse;
-import com.simol.appling.product.domain.vo.ProductListResponse;
-import com.simol.appling.product.domain.vo.ProductVo;
-import com.simol.appling.product.domain.vo.PutProductResponse;
+import com.simol.appling.product.domain.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -73,6 +70,11 @@ public class ProductServiceImpl implements ProductService {
                 .last(last)
                 .empty(empty)
                 .build();
+    }
+
+    @Override
+    public ProductDetailResponse getProductDetail(Long productId) {
+        return null;
     }
 
 }

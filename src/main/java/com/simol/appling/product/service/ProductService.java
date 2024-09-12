@@ -4,6 +4,7 @@ import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.vo.PostProductResponse;
+import com.simol.appling.product.domain.vo.ProductDetailResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
 import com.simol.appling.product.domain.vo.PutProductResponse;
 
@@ -28,4 +29,11 @@ public interface ProductService {
      * @return
      */
     ProductListResponse getProductList(GetProductListRequest getProductListRequest);
+
+    /**
+     * 상품 상세
+     * @param productId
+     * @return
+     */
+    ProductDetailResponse getProductDetail(Long productId);
 }
