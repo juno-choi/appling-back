@@ -48,6 +48,7 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() {
         productRepository.deleteAll();
+        productOptionRepository.deleteAll();
     }
 
     @Test
