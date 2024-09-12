@@ -1,15 +1,12 @@
 package com.simol.appling.product.domain.dto;
 
 import com.simol.appling.global.api.enums.Sort;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetProductListRequest {
     private int size;
     private int page;

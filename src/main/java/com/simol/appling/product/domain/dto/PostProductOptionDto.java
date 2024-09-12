@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.simol.appling.product.domain.enums.ProductOptionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Schema(description = "상품명 옵션 (등록)")
 public class PostProductOptionDto {
     @JsonProperty("product_option_name")
