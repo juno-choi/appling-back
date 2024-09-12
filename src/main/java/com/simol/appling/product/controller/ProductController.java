@@ -59,10 +59,10 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     })
     public ResponseEntity<ResponseData<ProductListResponse>> getProductList(
-            @Schema(description = "페이지 크기", defaultValue = "10", nullable = true) @RequestParam(required = false, defaultValue = "10" ) int size,
-            @Schema(description = "페이지 번호", defaultValue = "0", nullable = true) @RequestParam(required = false, defaultValue = "0") int page,
-            @Schema(description = "페이지 정렬(proudct id 기준)", defaultValue = "DESC", nullable = true) @RequestParam(required = false, defaultValue = "DESC" ) Sort sort,
-            @Schema(description = "검색어(아직 기능 개발 안함)", defaultValue = "", nullable = true) @RequestParam(required = false, defaultValue = "") String search) {
+            @Schema(description = "페이지 크기", defaultValue = "10", nullable = true) @RequestParam(name = "size", required = false, defaultValue = "10" ) int size,
+            @Schema(description = "페이지 번호", defaultValue = "0", nullable = true) @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @Schema(description = "페이지 정렬(proudct id 기준)", defaultValue = "DESC", nullable = true) @RequestParam(name = "sort",required = false, defaultValue = "DESC" ) Sort sort,
+            @Schema(description = "검색어(아직 기능 개발 안함)", defaultValue = "", nullable = true) @RequestParam(name = "search", required = false, defaultValue = "") String search) {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.getProductList(GetProductListRequest.from(size, page, sort, search))));

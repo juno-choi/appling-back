@@ -47,11 +47,11 @@ public class ProductEntity extends CommonEntity {
         this.productStatus = putProductRequest.getProductStatus();
 
         // product option 데이터 처리
-        // 리스트에 매치되지 않는 값들은 모두 제거 처리
-        this.productOptionList.clear();
         List<ProductOptionEntity> newProductOptionList = putProductRequest.getProductOption().stream()
                 .map(f -> ProductOptionEntity.from(f, this))
                 .collect(Collectors.toList());
+        newProductOptionList.stream().forEach(f -> f.updateCreateAt(this.productOptionList));
+        this.productOptionList.clear();
         this.productOptionList.addAll(newProductOptionList);
     }
 

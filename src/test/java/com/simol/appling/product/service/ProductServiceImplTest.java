@@ -1,14 +1,13 @@
 package com.simol.appling.product.service;
 
 import com.simol.appling.global.api.enums.Sort;
-import com.simol.appling.product.domain.dto.GetProductListRequest;
-import com.simol.appling.product.domain.dto.PostProductOptionDto;
-import com.simol.appling.product.domain.dto.PostProductRequest;
-import com.simol.appling.product.domain.dto.PutProductRequest;
+import com.simol.appling.product.domain.dto.*;
 import com.simol.appling.product.domain.entity.ProductEntity;
-import com.simol.appling.product.domain.enums.OptionStatus;
+import com.simol.appling.product.domain.entity.ProductOptionEntity;
+import com.simol.appling.product.domain.enums.ProductOptionStatus;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
+import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import com.simol.appling.product.domain.vo.PostProductResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -31,9 +29,13 @@ class ProductServiceImplTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductOptionRepository productOptionRepository;
+
     @AfterEach
     void cleanUp() {
         productRepository.deleteAll();
+        productOptionRepository.deleteAll();
     }
 
     @Test
@@ -41,12 +43,12 @@ class ProductServiceImplTest {
     void createProduct() {
         //given
         PostProductOptionDto option = PostProductOptionDto.builder()
-                .optionName("11-12과")
-                .optionPrice(100000)
-                .optionStatus(OptionStatus.ON_SALE)
-                .optionStock(100)
-                .optionDescription("아리수 11-12과 입니다.")
-                .optionSort(1)
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
                 .build();
 
         PostProductRequest productRequest = PostProductRequest.builder()
@@ -83,17 +85,42 @@ class ProductServiceImplTest {
     void putProduct() {
         //given
         final String CHANGE_PRODUCT_NAME = "시나노 골드";
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("아리수")
                 .productType(ProductType.OPTION)
+                .productOption(List.of(option))
                 .build();
 
         ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
+        ProductOptionEntity saveProductOption = productOptionRepository.save(ProductOptionEntity.from(option, saveProduct));
+        saveProduct.getProductOptionList().add(saveProductOption);
+        productRepository.save(saveProduct);
+
+        PutProductOptionDto putOption = PutProductOptionDto.builder()
+                .productOptionId(saveProductOption.getProductOptionId())
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
                 .productName(CHANGE_PRODUCT_NAME)
                 .productType(ProductType.OPTION)
                 .productStatus(ProductStatus.ON_SALE)
+                .productOption(List.of(putOption))
                 .build();
         //when
         PutProductResponse putProductResponse = productService.putProduct(putProductRequest);

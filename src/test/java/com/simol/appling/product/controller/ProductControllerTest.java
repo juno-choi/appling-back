@@ -3,11 +3,14 @@ package com.simol.appling.product.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simol.appling.product.domain.dto.PostProductOptionDto;
 import com.simol.appling.product.domain.dto.PostProductRequest;
+import com.simol.appling.product.domain.dto.PutProductOptionDto;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
-import com.simol.appling.product.domain.enums.OptionStatus;
+import com.simol.appling.product.domain.entity.ProductOptionEntity;
+import com.simol.appling.product.domain.enums.ProductOptionStatus;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
+import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +42,9 @@ class ProductControllerTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductOptionRepository productOptionRepository;
+
     @BeforeEach
     void setUp() {
         productRepository.deleteAll();
@@ -49,12 +55,12 @@ class ProductControllerTest {
     void postProduct() throws Exception {
         //given
         PostProductOptionDto option = PostProductOptionDto.builder()
-                .optionName("11-12과")
-                .optionPrice(100000)
-                .optionStatus(OptionStatus.ON_SALE)
-                .optionStock(100)
-                .optionDescription("아리수 11-12과 입니다.")
-                .optionSort(1)
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
                 .build();
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
@@ -75,17 +81,42 @@ class ProductControllerTest {
     @DisplayName("[PUT] /api/v1/product")
     void putProduct() throws Exception {
         //given
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
                 .productType(ProductType.OPTION)
+                .productOption(List.of(option))
                 .build();
+
         ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
+        ProductOptionEntity saveProductOption = productOptionRepository.save(ProductOptionEntity.from(option, saveProduct));
+        saveProduct.getProductOptionList().add(saveProductOption);
+        productRepository.save(saveProduct);
+
+        PutProductOptionDto putOption = PutProductOptionDto.builder()
+                .productOptionId(saveProductOption.getProductOptionId())
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
 
         PutProductRequest putProductRequest = PutProductRequest.builder()
                 .productId(saveProduct.getProductId())
                 .productType(ProductType.OPTION)
                 .productName("수정 상품")
                 .productStatus(ProductStatus.ON_SALE)
+                .productOption(List.of(putOption))
                 .build();
 
         //when
@@ -106,7 +137,17 @@ class ProductControllerTest {
                 .productType(ProductType.OPTION)
                 .build();
         ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
-        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+        ProductOptionEntity saveProductOption = productOptionRepository.save(ProductOptionEntity.from(option, saveProduct1));
+        saveProduct1.getProductOptionList().add(saveProductOption);
+        productRepository.save(saveProduct1);
 
         //when
         ResultActions perform = mockMvc.perform(get("/api/v1/product").param("size", "10").param("page", "0").param("sort", "DESC"));

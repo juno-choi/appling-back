@@ -30,7 +30,7 @@ public class GlobalControllerAdvice {
                 .collect(Collectors.toList());
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        ProblemDetail problemDetail = createProblemDetailFrom(httpStatus, "잘못된 입력입니다.", errors);
+        ProblemDetail problemDetail = createProblemDetailFrom(httpStatus, "잘못 된 입력입니다.", errors);
         return ResponseEntity.status(httpStatus).body(problemDetail);
     }
 

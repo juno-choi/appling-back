@@ -19,7 +19,6 @@ public class CommonEntity {
 
     @PreUpdate
     public void preUpdate() {
-        this.createdAt = this.createdAt;
         this.modifiedAt = LocalDateTime.now();
     }
 }
