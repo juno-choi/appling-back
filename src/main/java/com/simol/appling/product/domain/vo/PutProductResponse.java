@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
+import com.simol.appling.product.domain.enums.ProductType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -17,26 +18,18 @@ public record PutProductResponse(
     Long productId,
     @Schema(description = "상품명", example = "시나노 골드")
     String productName,
-    @Schema(description = "상품 무게", example = "10")
-    int productWeight,
-    @Schema(description = "상품 타입", example = "13과")
-    String productType,
+    @Schema(description = "상품 타입", example = "OPTION")
+    ProductType productType,
     @Schema(description = "상품 상태", example = "SOLD_OUT")
-    ProductStatus productStatus,
-    @Schema(description = "상품 가격", example = "150000")
-    int productPrice,
-    @Schema(description = "상품 수량", example = "0")
-    int productStock
+    ProductStatus productStatus
+
 ) {
     public static PutProductResponse from(ProductEntity updateProductEntity) {
         return PutProductResponse.builder()
                 .productId(updateProductEntity.getProductId())
                 .productName(updateProductEntity.getProductName())
-                .productWeight(updateProductEntity.getProductWeight())
                 .productType(updateProductEntity.getProductType())
                 .productStatus(updateProductEntity.getProductStatus())
-                .productPrice(updateProductEntity.getProductPrice())
-                .productStock(updateProductEntity.getProductStock())
                 .build();
     }
 }

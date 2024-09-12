@@ -4,6 +4,7 @@ import com.simol.appling.global.api.enums.Sort;
 import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
+import com.simol.appling.product.domain.enums.ProductType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,14 +36,11 @@ class ProductCustomRepositoryImplTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
-                .productWeight(5)
-                .productPrice(10000)
-                .productStock(10)
-                .productType("11과")
+                .productType(ProductType.OPTION)
                 .build();
 
-        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
-        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
 
         //when
         Page<ProductEntity> productPage = productCustomRepository.findAll(GetProductListRequest.from(10, 0, Sort.ASC, ""));
@@ -57,14 +55,11 @@ class ProductCustomRepositoryImplTest {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
                 .productName("등록 상품")
-                .productWeight(5)
-                .productPrice(10000)
-                .productStock(10)
-                .productType("11과")
+                .productType(ProductType.OPTION)
                 .build();
 
-        ProductEntity saveProduct1 = productRepository.save(productRequest.toProductEntity());
-        ProductEntity saveProduct2 = productRepository.save(productRequest.toProductEntity());
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        ProductEntity saveProduct2 = productRepository.save(ProductEntity.from(productRequest));
 
         //when
         Page<ProductEntity> productPage = productCustomRepository.findAll(GetProductListRequest.from(10, 0, Sort.DESC, ""));

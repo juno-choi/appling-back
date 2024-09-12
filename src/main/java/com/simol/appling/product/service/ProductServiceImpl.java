@@ -4,7 +4,9 @@ import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.entity.ProductEntity;
+import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.repo.ProductCustomRepository;
+import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import com.simol.appling.product.domain.vo.PostProductResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +26,17 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductCustomRepository productCustomRepository;
+    private final ProductOptionRepository productOptionRepository;
     @Transactional
     @Override
     public PostProductResponse createProduct(PostProductRequest postProductRequest) {
-        ProductEntity saveProduct = productRepository.save(postProductRequest.toProductEntity());
+        ProductEntity saveProduct = productRepository.save(ProductEntity.from(postProductRequest));
+        // saveProduct에 option list 추가하기
+        List<ProductOptionEntity> productOptionList = postProductRequest.getProductOption().stream()
+                .map(f -> ProductOptionEntity.from(f, saveProduct))
+                .collect(Collectors.toList());
+        productOptionRepository.saveAll(productOptionList);
+
         return PostProductResponse.createFrom(saveProduct);
     }
 

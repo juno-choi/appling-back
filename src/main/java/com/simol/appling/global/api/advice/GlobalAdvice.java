@@ -12,6 +12,12 @@ import java.util.List;
 
 @RestControllerAdvice(basePackages = "com.simol.appling")
 public class GlobalAdvice {
+    private ProblemDetail createProblemDetailFrom(HttpStatus httpStatus, String detail, List<ResponseError> errors) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(httpStatus, detail);
+        problemDetail.setType(URI.create("/swagger-ui/index.html"));
+        problemDetail.setProperty("errors", errors);
+        return problemDetail;
+    }
 
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> illegalArgumentException(IllegalArgumentException e) {
@@ -21,10 +27,5 @@ public class GlobalAdvice {
         return ResponseEntity.status(httpStatus).body(problemDetail);
     }
 
-    private static ProblemDetail createProblemDetailFrom(HttpStatus httpStatus, String detail, List<ResponseError> errors) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(httpStatus, detail);
-        problemDetail.setType(URI.create("/swagger-ui/index.html"));
-        problemDetail.setProperty("errors", errors);
-        return problemDetail;
-    }
+
 }
