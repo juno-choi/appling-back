@@ -3,6 +3,7 @@ package com.simol.appling.product.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.simol.appling.product.domain.entity.ProductEntity;
 import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,4 +28,13 @@ public record ProductDetailResponse(
     List<ProductOptionVo> productOption
 
 ) {
+    public static ProductDetailResponse from(ProductEntity productEntity) {
+        return ProductDetailResponse.builder()
+                .productId(productEntity.getProductId())
+                .productName(productEntity.getProductName())
+                .productType(productEntity.getProductType())
+                .productStatus(productEntity.getProductStatus())
+                .productOption(ProductOptionVo.convertListFrom(productEntity.getProductOptionList()))
+                .build();
+    }
 }

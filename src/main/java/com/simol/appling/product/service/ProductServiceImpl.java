@@ -74,7 +74,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetailResponse getProductDetail(Long productId) {
-        return null;
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 상품입니다."));
+        return ProductDetailResponse.from(productEntity);
     }
 
 }

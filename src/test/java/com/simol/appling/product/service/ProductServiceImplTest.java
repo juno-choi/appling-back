@@ -10,6 +10,7 @@ import com.simol.appling.product.domain.enums.ProductType;
 import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
 import com.simol.appling.product.domain.vo.PostProductResponse;
+import com.simol.appling.product.domain.vo.ProductDetailResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
 import com.simol.appling.product.domain.vo.PutProductResponse;
 import org.assertj.core.api.Assertions;
@@ -153,5 +154,47 @@ class ProductServiceImplTest {
 
         //then
         Assertions.assertThat(productList.productList().get(0).productName()).isEqualTo(saveProduct.getProductName());
+    }
+
+    @Test
+    @DisplayName("상품 번호가 유효하지 않아 상품 상세를 불러오는데 실패한다.")
+    void getProductDetailFailByProductId() {
+        //given
+        Long productId = 0L;
+        //when
+        //then
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> productService.getProductDetail(productId))
+                .withMessageContaining("유효하지 않은");
+    }
+
+    @Test
+    @DisplayName("상품 상세를 불러오는데 성공한다.")
+    void getProductDetail() {
+        //given
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("아리수")
+                .productType(ProductType.OPTION)
+                .productOption(List.of(option))
+                .build();
+
+        ProductEntity saveProduct = productRepository.save(ProductEntity.from(productRequest));
+        ProductOptionEntity saveProductOption = productOptionRepository.save(ProductOptionEntity.from(option, saveProduct));
+        saveProduct.getProductOptionList().add(saveProductOption);
+        productRepository.save(saveProduct);
+        //when
+        ProductDetailResponse productDetail = productService.getProductDetail(saveProduct.getProductId());
+        //then
+        Assertions.assertThat(productDetail.productName()).isEqualTo(saveProduct.getProductName());
+        Assertions.assertThat(productDetail.productOption()).hasSizeGreaterThan(0);
     }
 }
