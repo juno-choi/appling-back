@@ -158,7 +158,7 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("[PUT] /api/v1/product 유효하지 않은 상품은 실패")
+    @DisplayName("[PUT] /api/v1/product 유효하지 않은 상품은 실패한다.")
     void putProductFail() throws Exception{
         //given
         final Long NOT_EXISTS_PRODUCT_ID = 100L;

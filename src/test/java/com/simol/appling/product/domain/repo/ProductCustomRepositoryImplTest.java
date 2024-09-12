@@ -31,7 +31,7 @@ class ProductCustomRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("findAll asc 성공")
+    @DisplayName("findAll asc 성공한다.")
     void findAllASC() {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
@@ -50,7 +50,7 @@ class ProductCustomRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("findAll desc 성공")
+    @DisplayName("findAll desc 성공한다.")
     void findAllDESC() {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()

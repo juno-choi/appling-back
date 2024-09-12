@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductEntityTest {
 
     @Test
-    @DisplayName("상품 업데이트 성공")
+    @DisplayName("상품 업데이트 성공한다.")
     void update() {
         //given
         ProductEntity productEntity = ProductEntity.builder()

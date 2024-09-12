@@ -131,7 +131,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    @DisplayName("상품 리스트를 불러오는데 성공")
+    @DisplayName("상품 리스트를 불러오는데 성공한다.")
     void getProductList() {
         //given
         PostProductRequest productRequest = PostProductRequest.builder()
