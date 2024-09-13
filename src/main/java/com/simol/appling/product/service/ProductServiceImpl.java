@@ -51,25 +51,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductListResponse getProductList(GetProductListRequest getProductListRequest) {
         Page<ProductEntity> productPage = productCustomRepository.findAll(getProductListRequest);
-
-        int totalPage = productPage.getTotalPages();
-        Long totalElements = productPage.getTotalElements();
-        int numberOfElement = productPage.getNumberOfElements();
-        Boolean last = productPage.isLast();
-        Boolean empty = productPage.isEmpty();
-
-        List<ProductVo> productVoList = productPage.stream()
-                .map(ProductVo::from)
-                .toList();
-
-        return ProductListResponse.builder()
-                .productList(productVoList)
-                .totalPage(totalPage)
-                .totalElements(totalElements)
-                .numberOfElement(numberOfElement)
-                .last(last)
-                .empty(empty)
-                .build();
+        return ProductListResponse.from(productPage);
     }
 
     @Override
