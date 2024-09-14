@@ -48,9 +48,9 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PutProductResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
     })
-    public ResponseEntity<ResponseData<PostProductResponse>> putProduct(@RequestBody @Validated PutProductRequest putProductRequest) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.putProduct(putProductRequest)));
+    public ResponseEntity<ResponseData<PutProductResponse>> putProduct(@RequestBody @Validated PutProductRequest putProductRequest) {
+        PutProductResponse putProduct = productService.putProduct(putProductRequest);
+        return ResponseEntity.ok(ResponseData.from(ResponseDataCode.SUCCESS, putProduct));
     }
 
     @GetMapping("/product")
@@ -64,9 +64,8 @@ public class ProductController {
             @Schema(description = "페이지 번호", defaultValue = "0", nullable = true) @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @Schema(description = "페이지 정렬(proudct id 기준)", defaultValue = "DESC", nullable = true) @RequestParam(name = "sort",required = false, defaultValue = "DESC" ) Sort sort,
             @Schema(description = "검색어(아직 기능 개발 안함)", defaultValue = "", nullable = true) @RequestParam(name = "search", required = false, defaultValue = "") String search) {
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.getProductList(GetProductListRequest.from(size, page, sort, search))));
+                ProductListResponse result = productService.getProductList(GetProductListRequest.from(size, page, sort, search));
+        return ResponseEntity.ok(ResponseData.from(ResponseDataCode.SUCCESS, result));
     }
 
     @GetMapping("/product/{product_id}")
@@ -76,7 +75,7 @@ public class ProductController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     })
     public ResponseEntity<ResponseData<ProductDetailResponse>> getProductDetail(@Schema(description = "상품 번호", defaultValue = "1", nullable = true) @PathVariable(name = "product_id") Long productId) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.getProductDetail(productId)));
+        ProductDetailResponse productDetail = productService.getProductDetail(productId);
+        return ResponseEntity.ok(ResponseData.from(ResponseDataCode.SUCCESS, productDetail));
     }
 }

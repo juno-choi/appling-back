@@ -14,8 +14,8 @@ public record ResponseData<T>(
     String message,
     T data
 ) {
-    public static ResponseData from(ResponseDataCode responseDataCode, Object data) {
-        return ResponseData.<Object>builder()
+    public static <T> ResponseData<T> from(ResponseDataCode responseDataCode, T data) {
+        return ResponseData.<T>builder()
                 .code(responseDataCode.code)
                 .message(responseDataCode.message)
                 .data(data)
