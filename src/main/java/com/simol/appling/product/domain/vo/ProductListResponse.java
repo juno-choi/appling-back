@@ -3,8 +3,10 @@ package com.simol.appling.product.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.simol.appling.product.domain.entity.ProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -25,4 +27,25 @@ public record ProductListResponse(
         int numberOfElement,
         @Schema(description = "리스트")
         List<ProductVo> productList
-){}
+){
+        public static ProductListResponse from(Page<ProductEntity> productPage) {
+                int totalPage = productPage.getTotalPages();
+                Long totalElements = productPage.getTotalElements();
+                int numberOfElement = productPage.getNumberOfElements();
+                Boolean last = productPage.isLast();
+                Boolean empty = productPage.isEmpty();
+
+                List<ProductVo> productVoList = productPage.stream()
+                        .map(ProductVo::from)
+                        .toList();
+
+                return ProductListResponse.builder()
+                        .productList(productVoList)
+                        .totalPage(totalPage)
+                        .totalElements(totalElements)
+                        .numberOfElement(numberOfElement)
+                        .last(last)
+                        .empty(empty)
+                        .build();
+        }
+}

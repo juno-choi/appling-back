@@ -5,17 +5,14 @@ import com.simol.appling.product.domain.enums.ProductStatus;
 import com.simol.appling.product.domain.enums.ProductType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PutProductRequest {
     @JsonProperty("product_id")
     @NotNull(message = "상품 번호를 입력해 주세요.")

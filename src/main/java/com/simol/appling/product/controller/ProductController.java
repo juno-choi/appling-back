@@ -8,6 +8,7 @@ import com.simol.appling.product.domain.dto.GetProductListRequest;
 import com.simol.appling.product.domain.dto.PostProductRequest;
 import com.simol.appling.product.domain.dto.PutProductRequest;
 import com.simol.appling.product.domain.vo.PostProductResponse;
+import com.simol.appling.product.domain.vo.ProductDetailResponse;
 import com.simol.appling.product.domain.vo.ProductListResponse;
 import com.simol.appling.product.domain.vo.PutProductResponse;
 import com.simol.appling.product.service.ProductService;
@@ -53,7 +54,7 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    @Operation(summary = "상품리스트", description = "상품리스트 api")
+    @Operation(summary = "상품 리스트", description = "상품 리스트 api")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductListResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
@@ -66,5 +67,16 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.getProductList(GetProductListRequest.from(size, page, sort, search))));
+    }
+
+    @GetMapping("/product/{product_id}")
+    @Operation(summary = "상품 상세", description = "상품 상세 api")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductListResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    })
+    public ResponseEntity<ResponseData<ProductDetailResponse>> getProductDetail(@Schema(description = "상품 번호", defaultValue = "1", nullable = true) @PathVariable(name = "product_id") Long productId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ResponseData.from(ResponseDataCode.SUCCESS, productService.getProductDetail(productId)));
     }
 }

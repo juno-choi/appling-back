@@ -177,4 +177,44 @@ class ProductControllerTest {
         perform.andReturn().getResponse()
                 .getContentAsString(StandardCharsets.UTF_8).contains("유효하지 않은");
     }
+
+    @Test
+    @DisplayName("[GET] /api/v1/product/{productId} 유효하지 않은 상품은 실패한다.")
+    void getProductDetailFailByProductId() throws Exception{
+        //given
+        final Long NOT_EXISTS_PRODUCT_ID = 0L;
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/product/{productId}", NOT_EXISTS_PRODUCT_ID));
+        //then
+        perform.andExpect(status().is4xxClientError());
+        perform.andReturn().getResponse()
+                .getContentAsString(StandardCharsets.UTF_8).contains("유효하지 않은");
+    }
+
+
+    @Test
+    @DisplayName("[GET] /api/v1/product/{productId}")
+    void getProductDetail() throws Exception{
+        //given
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("등록 상품")
+                .productType(ProductType.OPTION)
+                .build();
+        ProductEntity saveProduct1 = productRepository.save(ProductEntity.from(productRequest));
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+        ProductOptionEntity saveProductOption = productOptionRepository.save(ProductOptionEntity.from(option, saveProduct1));
+        saveProduct1.getProductOptionList().add(saveProductOption);
+        productRepository.save(saveProduct1);
+        //when
+        ResultActions perform = mockMvc.perform(get("/api/v1/product/{productId}", saveProduct1.getProductId()));
+        //then
+        perform.andExpect(status().isOk());
+    }
 }

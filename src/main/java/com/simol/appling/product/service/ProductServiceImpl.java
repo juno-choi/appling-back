@@ -8,10 +8,7 @@ import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.repo.ProductCustomRepository;
 import com.simol.appling.product.domain.repo.ProductOptionRepository;
 import com.simol.appling.product.domain.repo.ProductRepository;
-import com.simol.appling.product.domain.vo.PostProductResponse;
-import com.simol.appling.product.domain.vo.ProductListResponse;
-import com.simol.appling.product.domain.vo.ProductVo;
-import com.simol.appling.product.domain.vo.PutProductResponse;
+import com.simol.appling.product.domain.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -54,25 +51,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductListResponse getProductList(GetProductListRequest getProductListRequest) {
         Page<ProductEntity> productPage = productCustomRepository.findAll(getProductListRequest);
+        return ProductListResponse.from(productPage);
+    }
 
-        int totalPage = productPage.getTotalPages();
-        Long totalElements = productPage.getTotalElements();
-        int numberOfElement = productPage.getNumberOfElements();
-        Boolean last = productPage.isLast();
-        Boolean empty = productPage.isEmpty();
-
-        List<ProductVo> productVoList = productPage.stream()
-                .map(ProductVo::from)
-                .toList();
-
-        return ProductListResponse.builder()
-                .productList(productVoList)
-                .totalPage(totalPage)
-                .totalElements(totalElements)
-                .numberOfElement(numberOfElement)
-                .last(last)
-                .empty(empty)
-                .build();
+    @Override
+    public ProductDetailResponse getProductDetail(Long productId) {
+        ProductEntity productEntity = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 상품입니다."));
+        return ProductDetailResponse.from(productEntity);
     }
 
 }
