@@ -20,7 +20,18 @@ public class OrderEntity extends CommonEntity {
     private Long orderId;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    private String orderName;
+    private String orderContact;
+    private String orderAddress;
+    private String orderAddressDetail;
+    private String orderZipcode;
+    private String recipientName;
+    private String recipientContact;
+    private String recipientAddress;
+    private String recipientAddressDetail;
+    private String recipientZipcode;
     private int orderAmount;
+
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProductEntity> orderProductList;

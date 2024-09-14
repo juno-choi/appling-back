@@ -23,14 +23,5 @@ public class OrderDeliveryEntity extends CommonEntity {
     @Enumerated(EnumType.STRING)
     private OrderDeliveryStatus orderDeliveryStatus;
 
-    private String orderName;
-    private String orderContact;
-    private String orderAddress;
-    private String orderAddressDetail;
-    private String orderZipcode;
-    private String recipientName;
-    private String recipientContact;
-    private String recipientAddress;
-    private String recipientAddressDetail;
-    private String recipientZipcode;
+    private String invoice;
 }
