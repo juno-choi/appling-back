@@ -1,7 +1,9 @@
 package com.simol.appling.order.domain.entity;
 
 import com.simol.appling.global.entity.CommonEntity;
+import com.simol.appling.order.domain.dto.PostOrderRequest;
 import com.simol.appling.order.domain.enums.OrderStatus;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,4 +40,32 @@ public class OrderEntity extends CommonEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDeliveryEntity> orderDeliveryEntityList;
+
+    public static OrderEntity from(PostOrderRequest postOrderRequest) {
+        return OrderEntity.builder()
+            .orderStatus(OrderStatus.TEMP)
+            .orderName(postOrderRequest.getOrderName())
+            .orderContact(postOrderRequest.getOrderContact())
+            .orderAddress(postOrderRequest.getOrderAddress())
+            .orderAddressDetail(postOrderRequest.getOrderAddressDetail())
+            .orderZipcode(postOrderRequest.getOrderZipcode())
+            .recipientName(postOrderRequest.getRecipientName())
+            .recipientContact(postOrderRequest.getRecipientContact())
+            .recipientAddress(postOrderRequest.getRecipientAddress())
+            .recipientAddressDetail(postOrderRequest.getRecipientAddressDetail())
+            .recipientZipcode(postOrderRequest.getRecipientZipcode())
+            .build();
+    }
+
+    public void updateOrderProductList(List<OrderProductEntity> orderProductEntityList) {
+        this.orderProductList = orderProductEntityList;
+    }
+
+    public void calculatorTotalAmount(List<OrderProductEntity> orderProductEntityList) {
+        int totalAmount = 0;
+        for (OrderProductEntity orderProductEntity : orderProductEntityList) {
+            totalAmount += orderProductEntity.getPrice() * orderProductEntity.getQuantity();
+        }
+        this.orderAmount = totalAmount;
+    }
 }

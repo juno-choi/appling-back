@@ -1,6 +1,7 @@
 package com.simol.appling.order.domain.entity;
 
 import com.simol.appling.global.entity.CommonEntity;
+import com.simol.appling.order.domain.dto.PostOrderDto;
 import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,4 +28,15 @@ public class OrderProductEntity extends CommonEntity {
     @ManyToOne
     @JoinColumn(name = "product_option_id")
     private ProductOptionEntity productOption;
+
+    public static OrderProductEntity from(PostOrderDto dto, OrderEntity order, ProductOptionEntity productOption) {
+        return OrderProductEntity.builder()
+            .orderProductName(productOption.getProduct().getProductName())
+            .orderProductOptionName(productOption.getProductOptionName())
+            .quantity(dto.getQuantity())
+            .price(productOption.getProductOptionPrice())
+            .order(order)
+            .productOption(productOption)
+            .build();
+    }
 }
