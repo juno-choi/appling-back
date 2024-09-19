@@ -17,7 +17,7 @@ public class PostOrderRequest {
     @NotNull(message = "주문 상품 리스트를 입력해주세요.")
     @Size(min = 1, max = 10, message = "1~10개의 주문 상품를 입력해세요.")
     @JsonProperty("order_product_list")
-    @Schema(description = "주문 상품 리스트", example = "주문 상품 리스트")
+    @Schema(description = "주문 상품 리스트")
     private List<PostOrderDto> orderProductList;
 
     @NotNull(message = "주문 상품 개수를 입력해주세요.")
