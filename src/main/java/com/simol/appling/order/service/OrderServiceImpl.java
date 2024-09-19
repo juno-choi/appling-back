@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         List<PostOrderDto> orderProductList = postOrderRequest.getOrderProductList();
         for (PostOrderDto dto : orderProductList) {
             ProductOptionEntity productOptionEntity = productOptionRepository.findById(dto.getProductOptionId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
 
             OrderProductEntity orderProductEntity = OrderProductEntity.from(dto, order, productOptionEntity);
             orderProductEntityList.add(orderProductEntity);

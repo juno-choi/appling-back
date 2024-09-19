@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -12,8 +13,9 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostOrderRequest {
-    // todo 주문 상품을 dto로 리스트로 받아야 함.
+    // 주문 상품을 dto로 리스트로 받아야 함.
     @NotNull(message = "주문 상품 리스트를 입력해주세요.")
+    @Size(min = 1, max = 10, message = "1~10개의 주문 상품를 입력해세요.")
     @JsonProperty("order_product_list")
     @Schema(description = "주문 상품 리스트", example = "주문 상품 리스트")
     private List<PostOrderDto> orderProductList;
