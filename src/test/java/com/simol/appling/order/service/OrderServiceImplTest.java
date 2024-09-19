@@ -62,7 +62,7 @@ class OrderServiceImplTest {
         //then
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
                         .isThrownBy(() -> orderService.createOrder(postOrderRequest))
-                        .withMessageContaining("존재하지 않는 상품입니다.");
+                        .withMessageContaining("유효하지 않은 상품");
     }
 
     @Test

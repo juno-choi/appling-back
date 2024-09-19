@@ -7,12 +7,15 @@ import com.simol.appling.order.domain.entity.OrderProductEntity;
 import com.simol.appling.order.domain.repository.OrderRepository;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.product.domain.entity.ProductOptionEntity;
+import com.simol.appling.product.domain.repo.ProductOptionCustomRepository;
 import com.simol.appling.product.domain.repo.ProductOptionRepository;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final ProductOptionCustomRepository productOptionCustomRepository;
     
     @Transactional
     @Override
@@ -50,13 +54,37 @@ public class OrderServiceImpl implements OrderService {
     private List<OrderProductEntity> getOrderProductEntityList(PostOrderRequest postOrderRequest, OrderEntity order) {
         List<OrderProductEntity> orderProductEntityList = new ArrayList<>();
         List<PostOrderDto> orderProductList = postOrderRequest.getOrderProductList();
-        for (PostOrderDto dto : orderProductList) {
-            ProductOptionEntity productOptionEntity = productOptionRepository.findById(dto.getProductOptionId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
 
-            OrderProductEntity orderProductEntity = OrderProductEntity.from(dto, order, productOptionEntity);
+        List<Long> productOptionIdList = orderProductList.stream().mapToLong(PostOrderDto::getProductOptionId).boxed().toList();
+
+        List<ProductOptionEntity> productOptionEntityList = productOptionCustomRepository.findAllByProductOptionId(productOptionIdList);
+
+        checkOrderValidation(productOptionIdList, productOptionEntityList);
+
+        // orderProductList, productOptionEntityList 모두 optionId 기준으로 정렬하기
+        Comparator<PostOrderDto> orderDtoComparator = Comparator.comparing(o -> o.getProductOptionId());
+        orderProductList = orderProductList.stream()
+                .sorted(orderDtoComparator)
+                .collect(Collectors.toList());
+
+        Comparator<ProductOptionEntity> productOptionEntityComparator = Comparator.comparing(o -> o.getProductOptionId());
+        productOptionEntityList = productOptionEntityList.stream()
+                .sorted(productOptionEntityComparator)
+                .collect(Collectors.toList());
+
+        for (int i=0; i<orderProductList.size(); i++) {
+            PostOrderDto dto = orderProductList.get(i);
+            ProductOptionEntity productOption = productOptionEntityList.get(i);
+            OrderProductEntity orderProductEntity = OrderProductEntity.from(dto, order, productOption);
             orderProductEntityList.add(orderProductEntity);
         }
+
         return orderProductEntityList;
+    }
+
+    private void checkOrderValidation(List<Long> productOptionIdList, List<ProductOptionEntity> productOptionEntityList) {
+        if (productOptionIdList.size() != productOptionEntityList.size()) {
+            throw new IllegalArgumentException("유효하지 않은 상품이 포함되어 있습니다.");
+        }
     }
 }
