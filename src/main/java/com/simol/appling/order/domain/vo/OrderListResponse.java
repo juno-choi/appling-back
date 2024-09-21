@@ -14,7 +14,7 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Builder
 @Schema(description = "주문 리스트")
-public record OrderResponseList (
+public record OrderListResponse(
         @Schema(description = "페이지 마지막 여부", example = "true")
         Boolean last,
         @Schema(description = "페이지 비어있음 여부", example = "false")
@@ -28,7 +28,7 @@ public record OrderResponseList (
         @Schema(description = "리스트")
         List<OrderVo> orderList
 ) {
-    public static OrderResponseList from(Page<OrderEntity> orderPage) {
+    public static OrderListResponse from(Page<OrderEntity> orderPage) {
         int totalPage = orderPage.getTotalPages();
         Long totalElements = orderPage.getTotalElements();
         int numberOfElement = orderPage.getNumberOfElements();
@@ -39,7 +39,7 @@ public record OrderResponseList (
                 .map(OrderVo::from)
                 .toList();
 
-        return OrderResponseList.builder()
+        return OrderListResponse.builder()
                 .orderList(orderVoList)
                 .totalPage(totalPage)
                 .totalElements(totalElements)

@@ -5,7 +5,7 @@ import com.simol.appling.order.domain.dto.PostOrderDto;
 import com.simol.appling.order.domain.dto.PostOrderRequest;
 import com.simol.appling.order.domain.entity.OrderEntity;
 import com.simol.appling.order.domain.repository.OrderRepository;
-import com.simol.appling.order.domain.vo.OrderResponseList;
+import com.simol.appling.order.domain.vo.OrderListResponse;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.product.domain.dto.PostProductOptionDto;
 import com.simol.appling.product.domain.dto.PostProductRequest;
@@ -23,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrderServiceImplTest {
@@ -173,7 +171,7 @@ class OrderServiceImplTest {
                 .orderContact(orderContact)
                 .build();
         //when
-        OrderResponseList orderList = orderService.getOrderList(getOrderListRequest);
+        OrderListResponse orderList = orderService.getOrderList(getOrderListRequest);
         //then
         Assertions.assertThat(orderList.orderList().size()).isGreaterThan(0);
     }

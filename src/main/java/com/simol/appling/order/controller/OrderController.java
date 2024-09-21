@@ -6,7 +6,7 @@ import com.simol.appling.global.api.enums.Sort;
 import com.simol.appling.global.api.response.ResponseData;
 import com.simol.appling.order.domain.dto.GetOrderListRequest;
 import com.simol.appling.order.domain.dto.PostOrderRequest;
-import com.simol.appling.order.domain.vo.OrderResponseList;
+import com.simol.appling.order.domain.vo.OrderListResponse;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.order.service.OrderService;
 import com.simol.appling.product.domain.vo.PostProductResponse;
@@ -48,12 +48,12 @@ public class OrderController {
             @ApiResponse(responseCode = "200", description = "정상", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PostProductResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)),
     })
-    public ResponseEntity<ResponseData<OrderResponseList>> getOrderList(
+    public ResponseEntity<ResponseData<OrderListResponse>> getOrderList(
             @Schema(description = "페이지 크기", defaultValue = "10", nullable = true) @RequestParam(name = "size", required = false, defaultValue = "10" ) int size,
             @Schema(description = "페이지 번호", defaultValue = "0", nullable = true) @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @Schema(description = "페이지 정렬(order id 기준)", defaultValue = "DESC", nullable = true) @RequestParam(name = "sort",required = false, defaultValue = "DESC" ) Sort sort,
             @Schema(description = "사용자 연락처", defaultValue = "") @RequestParam(name = "orderContact") String orderContact) {
-        OrderResponseList orderResponseList = orderService.getOrderList(GetOrderListRequest.from(size, page, sort, orderContact));
-        return ResponseEntity.ok(ResponseData.from(ResponseDataCode.SUCCESS, orderResponseList));
+        OrderListResponse orderListResponse = orderService.getOrderList(GetOrderListRequest.from(size, page, sort, orderContact));
+        return ResponseEntity.ok(ResponseData.from(ResponseDataCode.SUCCESS, orderListResponse));
     }
 }

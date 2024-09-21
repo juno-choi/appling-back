@@ -7,7 +7,7 @@ import com.simol.appling.order.domain.entity.OrderEntity;
 import com.simol.appling.order.domain.entity.OrderProductEntity;
 import com.simol.appling.order.domain.repository.OrderCustomRepository;
 import com.simol.appling.order.domain.repository.OrderRepository;
-import com.simol.appling.order.domain.vo.OrderResponseList;
+import com.simol.appling.order.domain.vo.OrderListResponse;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.repo.ProductOptionCustomRepository;
@@ -90,9 +90,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseList getOrderList(GetOrderListRequest getOrderListRequest) {
+    public OrderListResponse getOrderList(GetOrderListRequest getOrderListRequest) {
         // todo 요청 받은 값으로 주문 리스트를 가져오기
         Page<OrderEntity> orderList = orderCustomRepository.getOrderList(getOrderListRequest);
-        return OrderResponseList.from(orderList);
+        return OrderListResponse.from(orderList);
     }
 }
