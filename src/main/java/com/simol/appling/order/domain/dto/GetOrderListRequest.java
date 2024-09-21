@@ -13,4 +13,13 @@ public class GetOrderListRequest {
     private int page;
     private Sort sort;
     private String orderContact;
+
+    public static GetOrderListRequest from(int size, int page, Sort sort, String orderContact) {
+        return GetOrderListRequest.builder()
+                .size(size)
+                .page(page)
+                .sort(sort)
+                .orderContact(orderContact)
+                .build();
+    }
 }
