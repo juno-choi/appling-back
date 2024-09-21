@@ -42,15 +42,17 @@ public class OrderEntity extends CommonEntity {
     private List<OrderDeliveryEntity> orderDeliveryEntityList;
 
     public static OrderEntity from(PostOrderRequest postOrderRequest) {
+        String orderContact = postOrderRequest.getOrderContact().replace("-", "");
+        String recipientContact = postOrderRequest.getRecipientContact().replace("-", "");
         return OrderEntity.builder()
             .orderStatus(OrderStatus.TEMP)
             .orderName(postOrderRequest.getOrderName())
-            .orderContact(postOrderRequest.getOrderContact())
+            .orderContact(orderContact)
             .orderAddress(postOrderRequest.getOrderAddress())
             .orderAddressDetail(postOrderRequest.getOrderAddressDetail())
             .orderZipcode(postOrderRequest.getOrderZipcode())
             .recipientName(postOrderRequest.getRecipientName())
-            .recipientContact(postOrderRequest.getRecipientContact())
+            .recipientContact(recipientContact)
             .recipientAddress(postOrderRequest.getRecipientAddress())
             .recipientAddressDetail(postOrderRequest.getRecipientAddressDetail())
             .recipientZipcode(postOrderRequest.getRecipientZipcode())

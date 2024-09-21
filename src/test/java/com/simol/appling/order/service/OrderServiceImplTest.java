@@ -1,9 +1,11 @@
 package com.simol.appling.order.service;
 
+import com.simol.appling.order.domain.dto.GetOrderListRequest;
 import com.simol.appling.order.domain.dto.PostOrderDto;
 import com.simol.appling.order.domain.dto.PostOrderRequest;
 import com.simol.appling.order.domain.entity.OrderEntity;
 import com.simol.appling.order.domain.repository.OrderRepository;
+import com.simol.appling.order.domain.vo.OrderResponseList;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.product.domain.dto.PostProductOptionDto;
 import com.simol.appling.product.domain.dto.PostProductRequest;
@@ -115,4 +117,65 @@ class OrderServiceImplTest {
 
         Assertions.assertThat(orderEntity.getOrderName()).isEqualTo(postOrderRequest.getOrderName());
     }
+
+    @Test
+    @DisplayName("주문을 조회하는데 성공한다.")
+    void getOrderList() {
+        //given
+        final String orderContact = "01012345678";
+
+        PostProductOptionDto option = PostProductOptionDto.builder()
+                .productOptionName("11-12과")
+                .productOptionPrice(100000)
+                .productOptionStatus(ProductOptionStatus.ON_SALE)
+                .productOptionStock(100)
+                .productOptionDescription("아리수 11-12과 입니다.")
+                .productOptionSort(1)
+                .build();
+
+        PostProductRequest productRequest = PostProductRequest.builder()
+                .productName("아리수")
+                .productType(ProductType.OPTION)
+                .productOption(List.of(option))
+                .build();
+
+        ProductEntity productEntity = ProductEntity.from(productRequest);
+        ProductOptionEntity productOptionEntity = ProductOptionEntity.from(option, productEntity);
+        productEntity.getProductOptionList().add(productOptionEntity);
+        ProductEntity saveProduct = productRepository.save(productEntity);
+
+        PostOrderDto postOrderDto = PostOrderDto.builder()
+                .productOptionId(saveProduct.getProductOptionList().get(0).getProductOptionId())
+                .quantity(1)
+                .build();
+
+        PostOrderRequest postOrderRequest = PostOrderRequest.builder()
+                .orderProductList(List.of(postOrderDto))
+                .orderName("주문자")
+                .orderContact(orderContact)
+                .orderAddress("경기도 성남시 분당구 판교역로 231")
+                .orderAddressDetail("H스퀘어 S동 5층")
+                .orderZipcode("12345")
+                .recipientName("받는이")
+                .recipientContact("010-1234-5678")
+                .recipientAddress("경기도 성남시 분당구 판교역로 231")
+                .recipientAddressDetail("H스퀘어 S동 6층")
+                .recipientZipcode("12345")
+                .build();
+
+        for (int i=0; i<30; i++) {
+            orderRepository.save(OrderEntity.from(postOrderRequest));
+        }
+
+        GetOrderListRequest getOrderListRequest = GetOrderListRequest.builder()
+                .size(10)
+                .page(0)
+                .orderContact(orderContact)
+                .build();
+        //when
+        OrderResponseList orderList = orderService.getOrderList(getOrderListRequest);
+        //then
+        Assertions.assertThat(orderList.orderList().size()).isGreaterThan(0);
+    }
+
 }
