@@ -61,6 +61,16 @@ class OrderServiceImplTest {
 
         PostOrderRequest postOrderRequest = PostOrderRequest.builder()
                 .orderProductList(List.of(postOrderDto))
+                .orderName("주문자")
+                .orderContact("010-1234-5678")
+                .orderAddress("경기도 성남시 분당구 판교역로 231")
+                .orderAddressDetail("H스퀘어 S동 5층")
+                .orderZipcode("12345")
+                .recipientName("받는이")
+                .recipientContact("010-1234-5678")
+                .recipientAddress("경기도 성남시 분당구 판교역로 231")
+                .recipientAddressDetail("H스퀘어 S동 6층")
+                .recipientZipcode("12345")
                 .build();
 
         //when

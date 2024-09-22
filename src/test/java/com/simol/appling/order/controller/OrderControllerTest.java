@@ -172,7 +172,7 @@ class OrderControllerTest {
                 get("/api/v1/order")
                         .param("size", "10")
                         .param("page", "0")
-                        .param("sort", "DESC")
+                        .param("sort", "ASC")
                         .param("orderContact", orderContact));
         //then
         perform.andExpect(status().isOk());

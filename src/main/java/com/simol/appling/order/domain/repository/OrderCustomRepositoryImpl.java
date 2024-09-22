@@ -1,6 +1,5 @@
 package com.simol.appling.order.domain.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simol.appling.global.api.enums.Sort;
 import com.simol.appling.order.domain.dto.GetOrderListRequest;
@@ -22,24 +21,22 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
     private final JPAQueryFactory querydsl;
 
     @Override
-    public Page<OrderEntity> getOrderList(GetOrderListRequest getOrderListRequest) {
+    public Page<OrderEntity> getOrderListByOrderContact(GetOrderListRequest getOrderListRequest) {
         String orderContact = getOrderListRequest.getOrderContact().replace("-", "");
         Pageable pageable = Pageable.ofSize(getOrderListRequest.getSize()).withPage(getOrderListRequest.getPage());
 
         Sort sort = getOrderListRequest.getSort();
         QOrderEntity order = QOrderEntity.orderEntity;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(order.orderContact.eq(orderContact));
 
         List<OrderEntity> fetch = querydsl.selectFrom(order)
-                .where(builder)
+                .where(order.orderContact.eq(orderContact))
                 .orderBy(sort == Sort.ASC ? order.orderId.asc() : order.orderId.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         Long total = querydsl.selectFrom(order)
-                .where(builder)
+                .where(order.orderContact.eq(orderContact))
                 .fetch()
                 .stream().count();
 

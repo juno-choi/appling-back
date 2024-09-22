@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -94,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderListResponse getOrderList(GetOrderListRequest getOrderListRequest) {
         // 요청 받은 값으로 주문 리스트를 가져오기
-        Page<OrderEntity> orderList = orderCustomRepository.getOrderList(getOrderListRequest);
+        Page<OrderEntity> orderList = orderCustomRepository.getOrderListByOrderContact(getOrderListRequest);
         return OrderListResponse.from(orderList);
     }
 
