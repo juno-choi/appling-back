@@ -8,6 +8,7 @@ import com.simol.appling.order.domain.entity.OrderProductEntity;
 import com.simol.appling.order.domain.repository.OrderCustomRepository;
 import com.simol.appling.order.domain.repository.OrderRepository;
 import com.simol.appling.order.domain.vo.OrderListResponse;
+import com.simol.appling.order.domain.vo.OrderResponse;
 import com.simol.appling.order.domain.vo.PostOrderResponse;
 import com.simol.appling.product.domain.entity.ProductOptionEntity;
 import com.simol.appling.product.domain.repo.ProductOptionCustomRepository;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -91,8 +93,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderListResponse getOrderList(GetOrderListRequest getOrderListRequest) {
-        // todo 요청 받은 값으로 주문 리스트를 가져오기
+        // 요청 받은 값으로 주문 리스트를 가져오기
         Page<OrderEntity> orderList = orderCustomRepository.getOrderList(getOrderListRequest);
         return OrderListResponse.from(orderList);
+    }
+
+    @Override
+    public OrderResponse getOrder(Long orderId) {
+        OrderEntity orderEntity = orderCustomRepository.getOrder(orderId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 주문번호 입니다."));
+        return OrderResponse.from(orderEntity);
     }
 }
