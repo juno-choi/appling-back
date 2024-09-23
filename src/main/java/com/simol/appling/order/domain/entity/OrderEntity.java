@@ -3,7 +3,6 @@ package com.simol.appling.order.domain.entity;
 import com.simol.appling.global.entity.CommonEntity;
 import com.simol.appling.order.domain.dto.PostOrderRequest;
 import com.simol.appling.order.domain.enums.OrderStatus;
-
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,6 @@
 package com.simol.appling.order.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simol.appling.order.domain.dto.GetOrderListRequest;
 import com.simol.appling.order.domain.dto.PostOrderDto;
 import com.simol.appling.order.domain.dto.PostOrderRequest;
 import com.simol.appling.order.domain.entity.OrderEntity;
@@ -26,15 +25,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

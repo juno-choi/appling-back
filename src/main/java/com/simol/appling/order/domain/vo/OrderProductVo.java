@@ -3,7 +3,6 @@ package com.simol.appling.order.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.simol.appling.order.domain.entity.OrderEntity;
 import com.simol.appling.order.domain.entity.OrderProductEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

@@ -2,7 +2,6 @@ package com.simol.appling.global.api.enums;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public enum ResponseDataCode {
